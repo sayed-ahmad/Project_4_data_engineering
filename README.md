@@ -1,6 +1,7 @@
 # Project_4_data_engineering
 # From Local Scripts to Cloud-Automated Data Pipeline: My GCP Data Engineering Journey
 ![Screenshot 2026-01-24 094317](https://github.com/user-attachments/assets/2e820b87-0ebf-4758-8f9c-2b4d16d482f5)
+
 Automating Web Scraping and API Ingestion to Cloud-Hosted Storage
 
 
