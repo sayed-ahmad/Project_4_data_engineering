@@ -11,11 +11,11 @@ In this short article, I share my journey from a local setup to a cloud-based so
 
 # Accomplishments
 
-Extracted data from websites using web scraping and APIs (Wikipedia, OpenWeatherMap, and AeroDataBox).
-Normalized and cleaned raw API JSON into structured DataFrames.
-Created reusable helper functions for datetime normalization and API ingestion.
-Ensured robust handling of missing fields and datetime issues.
-Stored processed data securely in a MySQL database on GCP.
-Development of cloud functions for automatically retrieving and updating data.
-Automated the entire pipeline using Cloud Scheduler for regular execution.
-Implemented comprehensive logging for API failures, missing fields, and database errors to enable quick troubleshooting.
+- Extracted data from websites using web scraping and APIs (Wikipedia, OpenWeatherMap, and AeroDataBox).
+- Normalized and cleaned raw API JSON into structured DataFrames.
+- Created reusable helper functions for datetime normalization and API ingestion.
+- Ensured robust handling of missing fields and datetime issues.
+- Stored processed data securely in a MySQL database on GCP.
+- Development of cloud functions for automatically retrieving and updating data.
+- Automated the entire pipeline using Cloud Scheduler for regular execution.
+- Implemented comprehensive logging for API failures, missing fields, and database errors to enable quick troubleshooting.
