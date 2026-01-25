@@ -19,3 +19,5 @@ In this short article, I share my journey from a local setup to a cloud-based so
 - Development of cloud functions for automatically retrieving and updating data.
 - Automated the entire pipeline using Cloud Scheduler for regular execution.
 - Implemented comprehensive logging for API failures, missing fields, and database errors to enable quick troubleshooting.
+
+
