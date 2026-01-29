@@ -9,6 +9,9 @@ During my journey into data science, I also explored data engineering, particula
 For this project, I needed to collect data from multiple websites using various methods. Along the way, I learned about web scraping, APIs, and several tools offered by the Google Cloud Platform (GCP). The primary goal of the project was to collect weather and flight arrival data from different cities, then transfer, automate, and store it in GCP.
 In this short article, I share my journey from a local setup to a cloud-based solution, along with the challenges faced.
 
+My journey in Data Science in Medium:
+https://medium.com/@haji.eng/from-local-scripts-to-cloud-automated-data-pipeline-my-gcp-data-engineering-journey-2c4248229643
+
 # Accomplishments
 
 - Extracted data from websites using web scraping and APIs (Wikipedia, OpenWeatherMap, and AeroDataBox).
