@@ -1,0 +1,95 @@
+import os
+import functions_framework
+from pytz import timezone
+from datetime import datetime, timedelta
+import pandas as pd
+import requests
+from sqlalchemy import create_engine, text
+import pysqlite3
+import sys
+sys.modules["sqlite3"] = pysqlite3
+
+def normalize_dt(value):
+    if value is None:
+        return None
+    return pd.to_datetime(value, utc=True, errors="coerce").tz_localize(None)
+
+@functions_framework.http
+def flights_pushing(request):
+
+    schema = "cities"  
+    host = "34.79.76.172"
+    user = "root"
+    password = os.environ['password']  
+    port = 3306
+    
+    connection_string = f'mysql+pymysql://{user}:{password}@{host}:{port}/{schema}'
+    engine = create_engine(connection_string)
+
+    cities_df = pd.read_sql('SELECT airport_icao FROM airports', con=engine)
+    # existing_flights_df = pd.read_sql('SELECT arrival_id, airport_icao, scheduledArrival FROM flights', con=connection_string)
+     
+    icao_code = cities_df["airport_icao"].tolist()
+
+    all_arrivals = []    
+
+    tommorow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+    time_window = [
+            ("00:00", "11:59"),
+            ("12:00", "23:59")
+        ]
+    
+    for icao in icao_code:
+        for start_time, end_time in time_window:
+            url = f"https://aerodatabox.p.rapidapi.com/flights/airports/icao/{icao}/{tommorow}T{start_time}/{tommorow}T{end_time}"
+
+            querystring = {
+                "withLeg":"false",
+                "direction":"Arrival",
+                "withCancelled":"true",
+                "withCodeshared":"false",
+                "withCargo":"false",
+                "withPrivate":"false",
+                "withLocation":"false"
+            }
+
+            headers = {
+                "x-rapidapi-key": os.environ["FLIGHTS_API_KEY"],
+                "x-rapidapi-host": "aerodatabox.p.rapidapi.com"
+            }
+
+            response = requests.get(url, headers=headers, params=querystring)
+
+          
+            if response.status_code != 200:
+                # print(f"Failed to retrieve data for {icao} from {start_time} to {end_time}. Status code: {response.status_code}")
+                continue
+
+               
+            data = response.json()
+            arrivals = data.get("arrivals", [])
+
+            for flight in arrivals:
+                movement = flight.get("movement", {})
+                scheduled = movement.get("scheduledTime", {})
+                revised = movement.get("revisedTime", {})
+
+                all_arrivals.append({
+                    "airport_icao": icao,
+                    "airport_name": movement.get("airport", {}).get("name"),
+                    "airline_name": flight.get("airline", {}).get("name"),
+                    "flight_number": flight.get("number"),
+                    "scheduledArrival": normalize_dt(scheduled.get("utc")),
+                    "revisedTime": normalize_dt(revised.get("utc")),
+                    "gate": movement.get("gate"),
+                    "baggage_claim": movement.get("baggageBelt"),
+                    "status": flight.get("status"),
+                    "local_time": normalize_dt(scheduled.get("local"))
+                })
+    flights_df = pd.DataFrame(all_arrivals) 
+    
+
+    if not flights_df.empty:
+        flights_df.to_sql('flights', con=engine, if_exists='append', index=False)
+    return {"message": "Success", "records": len(flights_df)}, 200
