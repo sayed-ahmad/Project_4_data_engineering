@@ -1,0 +1,15 @@
+schema = "cities"
+host = "127.0.0.1"
+user = "root"
+password = os.environ['password']
+port = 3306
+
+connection_string = f'mysql+pymysql://{user}:{password}@{host}:{port}/{schema}'
+
+city_df.to_sql('city',
+                  if_exists='append',
+                  con=connection_string,
+                  index=False)
+
+cities_sql = pd.read_sql('city', con = connection_string)
+cities_sql
