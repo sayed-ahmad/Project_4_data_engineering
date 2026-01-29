@@ -1,0 +1,38 @@
+def get_airport_data():
+
+    all_airports = []
+    
+    API_KEY = os.environ["FLIGHTS_API_KEY"] 
+    headers = {
+        "x-rapidapi-key": API_KEY,
+        "x-rapidapi-host": "aerodatabox.p.rapidapi.com"
+    }
+
+
+    for _, row in cities_df.iterrows():  
+        city_id = row["city_id"]
+        city_name = row["city_name"]
+        latitude = row["latitude"]
+        longitude = row["longitude"]
+        
+        url = f"https://aerodatabox.p.rapidapi.com/airports/search/location/{latitude}/{longitude}/km/50/16"
+        response = requests.get(url, headers=headers)
+       
+        if response.status_code != 200:
+            print(f"Failed to retrieve data for {city_id}: {response.status_code}")
+            continue
+
+        airport_data = response.json()
+
+        for items in airport_data.get("items", []):
+            all_airports.append({
+                "city_id": city_id,
+                "city_name": city_name,
+                "airport_icao": items.get("icao"),
+                "airport_name": items.get("name"),
+                "latitude": items["location"]["lat"],
+                "longitude": items["location"]["lon"]
+                
+            })
+    
+    return pd.DataFrame(all_airports)   
