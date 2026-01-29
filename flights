@@ -1,0 +1,71 @@
+def tommorow_arrivals():
+
+    def normalize_dt(value):
+        if value is None:
+            return None
+        return pd.to_datetime(value, utc=True, errors="coerce").tz_localize(None)
+        
+    all_arrivals = []
+    
+    
+    icao_code = cities_df["airport_icao"].tolist()
+        
+    tommorow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+    time_window = [
+            ("00:00", "11:59"),
+            ("12:00", "23:59")
+        ]
+    
+    for icao in icao_code:
+        for start_time, end_time in time_window:
+            url = f"https://aerodatabox.p.rapidapi.com/flights/airports/icao/{icao}/{tommorow}T{start_time}/{tommorow}T{end_time}"
+
+            querystring = {
+                "withLeg":"false",
+                "direction":"Arrival",
+                "withCancelled":"true",
+                "withCodeshared":"false",
+                "withCargo":"false",
+                "withPrivate":"false",
+                "withLocation":"false"
+            }
+
+            headers = {
+                "x-rapidapi-key": os.environ["FLIGHTS_API_KEY"],
+                "x-rapidapi-host": "aerodatabox.p.rapidapi.com"
+            }
+
+            response = requests.get(url, headers=headers, params=querystring)
+
+            if response.status_code == 204:
+                # print(f"No arrivals for {icao} from {start_time} to {end_time}")
+                continue
+
+            if response.status_code != 200:
+                print(f"Failed to retrieve data for {icao} from {start_time} to {end_time}. Status code: {response.status_code}")
+                continue
+
+            arrivals = response.json().get("arrivals", [])
+
+            for flight in arrivals:
+                movement = flight.get("movement", {})
+                scheduled = movement.get("scheduledTime", {})
+                revised = movement.get("revisedTime", {})
+
+                all_arrivals.append({
+                    "airport_icao": icao,
+                    "airport_name": movement.get("airport", {}).get("name"),
+                    "airline_name": flight.get("airline", {}).get("name"),
+                    "flight_number": flight.get("number"),
+                    "scheduledArrival": normalize_dt(scheduled.get("utc")),
+                    "revisedTime": normalize_dt(revised.get("utc")),
+                    "gate": movement.get("gate"),
+                    "baggage_claim": movement.get("baggageBelt"),
+                    "status": flight.get("status"),
+                    "local_time": normalize_dt(scheduled.get("local"))
+                })
+                
+
+    return pd.DataFrame(all_arrivals)
+  
