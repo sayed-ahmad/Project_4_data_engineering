@@ -1,1 +1,40 @@
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+from lat_lon_parser import parse
+from datetime import datetime
+import re
+import dotenv
+import os
 
+dotenv.load_dotenv()
+
+def city_dataframe(cities):
+    cities_data = []
+
+    for city in cities:
+        url = f"https://www.wikipedia.org/wiki/{city}"
+        headers = {'User-Agent': 'Chrome/139.0.0.0'}
+    
+        response = requests.get(url, headers = headers)
+        city_soup = BeautifulSoup(response.content, 'html.parser')
+    
+        country = city_soup.find(class_="infobox-data").get_text()
+        lat = city_soup.find(class_='latitude').get_text()
+        long = city_soup.find(class_='longitude').get_text()
+        city_pop = city_soup.find(string = 'Population').find_next("td").get_text()
+        pop_clean = re.sub(r"[^\d]", "", city_pop)
+        # today = pd.to_datetime.today().strftime("%d.%m.%Y")
+        today = pd.Timestamp.now().date().isoformat()
+
+    
+        cities_data.append({
+            "city_name": city,
+            "country": country,
+            "latitude": parse(lat),
+            "longitude": parse(long),
+            "population_city": pop_clean,
+            "timestamp_pop": today
+    })
+
+    return pd.DataFrame(cities_data)
