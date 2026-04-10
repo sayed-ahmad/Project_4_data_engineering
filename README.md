@@ -1,26 +1,136 @@
-# Project_4_data_engineering
-# From Local Scripts to Cloud-Automated Data Pipeline: My GCP Data Engineering Journey
+# ☁️ Project 4: Data Engineering Pipeline on GCP
+
+**From Local Scripts to Cloud-Automated Data Pipeline**
 ![Screenshot 2026-01-24 094317](https://github.com/user-attachments/assets/2e820b87-0ebf-4758-8f9c-2b4d16d482f5)
 
-Automating Web Scraping and API Ingestion to Cloud-Hosted Storage
+---
 
+## 📌 Overview
 
-During my journey into data science, I also explored data engineering, particularly the process of building data pipelines. This was a completely new topic for me and provided valuable learning experiences and fresh perspectives.
-For this project, I needed to collect data from multiple websites using various methods. Along the way, I learned about web scraping, APIs, and several tools offered by the Google Cloud Platform (GCP). The primary goal of the project was to collect weather and flight arrival data from different cities, then transfer, automate, and store it in GCP.
-In this short article, I share my journey from a local setup to a cloud-based solution, along with the challenges faced.
+This project documents my journey from building **local data scripts** to developing a fully **automated, cloud-based data pipeline** using **Google Cloud Platform (GCP)**.
 
-My journey in Data Science in Medium:
-https://medium.com/@haji.eng/from-local-scripts-to-cloud-automated-data-pipeline-my-gcp-data-engineering-journey-2c4248229643
+The pipeline collects **weather and flight arrival data** from multiple sources, processes it, and stores it in a cloud-hosted database with full automation and monitoring.
 
-# Accomplishments
+---
 
-- Extracted data from websites using web scraping and APIs (Wikipedia, OpenWeatherMap, and AeroDataBox).
-- Normalized and cleaned raw API JSON into structured DataFrames.
-- Created reusable helper functions for datetime normalization and API ingestion.
-- Ensured robust handling of missing fields and datetime issues.
-- Stored processed data securely in a MySQL database on GCP.
-- Development of cloud functions for automatically retrieving and updating data.
-- Automated the entire pipeline using Cloud Scheduler for regular execution.
-- Implemented comprehensive logging for API failures, missing fields, and database errors to enable quick troubleshooting.
+## 🎯 Project Objective
 
+To design and implement an **end-to-end data pipeline** that:
+
+* Extracts data from APIs and web sources
+* Cleans and transforms raw data into structured formats
+* Stores data in a cloud database
+* Automates the entire workflow using GCP services
+
+---
+
+## 🚀 Key Features
+
+* Automated data ingestion from multiple sources
+* Cloud-based storage and processing
+* Scheduled pipeline execution
+* Robust error handling and logging
+
+---
+
+## 🧠 About the Project
+
+As part of my data science journey, I explored **data engineering concepts**, focusing on building scalable and automated pipelines.
+
+The project involved:
+
+* Collecting data from different sources (web scraping and APIs)
+* Transitioning from local scripts to a cloud-based architecture
+* Leveraging GCP tools to automate workflows and improve reliability
+
+---
+
+## 🔗 Article
+
+📖 Read more about the full journey here:
+[My Data Engineering Journey on Medium] https://medium.com/@haji.eng/from-local-scripts-to-cloud-automated-data-pipeline-my-gcp-data-engineering-journey-2c4248229643
+
+---
+
+## 🛠️ Tools & Technologies
+
+* **Python**
+* **APIs & Web Scraping**
+* **Google Cloud Platform (GCP)**
+
+  * Cloud Functions
+  * Cloud Scheduler
+  * Cloud SQL (MySQL)
+
+---
+
+## 📊 Data Sources
+
+* Weather data (OpenWeather API)
+* Flight arrival data (AeroDataBox API)
+* Supplementary data (Wikipedia scraping)
+
+---
+
+## 🏗️ Pipeline Architecture
+
+1. **Data Extraction**
+
+   * APIs (weather, flight data)
+   * Web scraping (Wikipedia)
+
+2. **Data Transformation**
+
+   * JSON normalization into structured DataFrames
+   * Datetime standardization
+   * Handling missing or inconsistent data
+
+3. **Data Storage**
+
+   * Cloud-hosted MySQL database (GCP)
+
+4. **Automation**
+
+   * Cloud Functions for execution
+   * Cloud Scheduler for periodic runs
+
+5. **Monitoring & Logging**
+
+   * Logging for API failures and missing fields
+   * Error tracking for database operations
+
+---
+
+## 🏆 Accomplishments
+
+* Extracted data from multiple sources using APIs and web scraping
+* Cleaned and transformed raw JSON data into structured formats
+* Built reusable helper functions for data processing
+* Implemented robust handling of missing data and datetime inconsistencies
+* Deployed a MySQL database on GCP for secure storage
+* Developed cloud functions to automate data ingestion
+* Scheduled automated pipeline runs using Cloud Scheduler
+* Added comprehensive logging for debugging and reliability
+
+---
+
+## 📂 Repository Structure
+
+| File / Folder | Description                                |
+| ------------- | ------------------------------------------ |
+| `/scripts`    | Data extraction and transformation scripts |
+| `/functions`  | Cloud Functions for automation             |
+| `/data`       | Processed datasets (if included)           |
+| `/logs`       | Logging outputs (optional)                 |
+| `README.md`   | Project documentation                      |
+
+---
+
+## ✨ Key Takeaway
+
+This project demonstrates the transition from **local data processing** to a **scalable, automated cloud pipeline**, showcasing foundational skills in **data engineering, cloud computing, and workflow automation**.
+
+---
+
+🚀 *Feel free to explore the repository and share your feedback!*
 
